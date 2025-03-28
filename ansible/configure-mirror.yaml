@@ -1,0 +1,8 @@
+- hosts: mirrors
+  roles:
+#    - install-deps
+#    - install-mirror
+
+- hosts: localhost
+  roles:
+    - mirror-images

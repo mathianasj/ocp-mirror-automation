@@ -17,3 +17,14 @@ RUN oc mirror -c /home/cmirror/imagesetconfig.yaml file:///home/cmirror/oc-mirro
 	rm -rf /home/cmirror/oc-mirrors/working-dir && \
 	rm -rf /root/.oc-mirror && \
 	rm -rf /var/lib/containers
+
+RUN dnf install -y ansible-core
+
+ENV HOME=/home/cmirror
+
+RUN curl -LO https://www.rpmfind.net/linux/fedora/linux/releases/41/Everything/x86_64/os/Packages/a/acl-2.3.2-2.fc41.x86_64.rpm
+
+COPY ansible /home/cmirror/ansible
+COPY imagesetconfig.yaml /home/cmirror
+
+CMD ["ansible-playbook", "-i", "./inventory", "./ansible/configure-mirror.yaml"]

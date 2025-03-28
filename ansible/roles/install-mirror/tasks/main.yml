@@ -1,0 +1,10 @@
+---
+
+- name: create storage directory
+  ansible.builtin.file:
+    path: /quay
+    state: directory
+    mode: 0777
+  become: true
+- name: install mirror
+  ansible.builtin.shell: ./mirror-registry install --quayHostname {{inventory_hostname}} --quayRoot /quay/root --quayStorage /quay/storage --initPassword "SuperSecret"

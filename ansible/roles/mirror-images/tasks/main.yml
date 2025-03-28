@@ -1,0 +1,14 @@
+---
+- name: create docker config path
+  ansible.builtin.file:
+    path: /home/cmirror/.docker
+    state: directory
+- name: build push secret
+  ansible.builtin.template:
+    src: pullsecret.json.j2
+    dest: /home/cmirror/.docker/config.json
+- name: deploy mirror images
+  ansible.builtin.shell: oc mirror --v2 --from file:///home/cmirror/oc-mirrors docker://mirror.example.lan:8443 --config /home/cmirror/imagesetconfig.yaml --dest-tls-verify=false --src-tls-verify=false
+  register: mirrorout
+
+- debug: var=mirrorout.stdout_lines
