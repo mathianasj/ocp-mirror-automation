@@ -1,0 +1,7 @@
+- hosts: mirrors
+  roles:
+    - copy-ca
+
+- hosts: localhost
+  roles:
+    - create-agent

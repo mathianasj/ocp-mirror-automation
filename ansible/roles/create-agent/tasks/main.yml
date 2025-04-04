@@ -1,0 +1,26 @@
+---
+- name: update install config for disconnected mode
+  ansible.builtin.shell: yq -i '.additionalTrustBundle = load_str("/home/cmirror/rootca.pem")' /home/cmirror/cluster-config/install-config.yaml
+
+- name: build pull secret
+  ansible.builtin.template:
+    src: pullsecret.json.j2
+    dest: /home/cmirror/.docker/config.json
+
+- name: create ocp install manifests
+  ansible.builtin.shell: openshift-install agent create cluster-manifests --dir=/home/cmirror/cluster-config
+  register: mirrorout
+
+- debug: var=mirrorout.stdout_lines
+
+- name: copy manifests to be applied at install time
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "/home/cmirror/cluster-config/cluster-manifests"
+  with_fileglob: "/home/cmirror/oc-mirrors/working-dir/cluster-resources/*.yaml"
+
+- name: build iso
+  ansible.builtin.shell: openshift-install agent create image --dir=/home/cmirror/cluster-config
+  register: buildisoout
+
+- debug: var=buildisoout.stdout_lines

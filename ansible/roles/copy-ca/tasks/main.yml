@@ -1,0 +1,6 @@
+---
+- name: copy root ca for registry
+  fetch:
+    src: /quay/root/quay-rootCA/rootCA.pem
+    dest: /home/cmirror/rootca.pem
+    flat: true

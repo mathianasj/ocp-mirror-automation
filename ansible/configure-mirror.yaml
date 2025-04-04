@@ -1,7 +1,7 @@
 - hosts: mirrors
   roles:
-#    - install-deps
-#    - install-mirror
+    - install-deps
+    - install-mirror
 
 - hosts: localhost
   roles:

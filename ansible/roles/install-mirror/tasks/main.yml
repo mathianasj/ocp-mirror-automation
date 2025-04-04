@@ -1,4 +1,9 @@
 ---
+- name: get quay app service status
+  ansible.builtin.systemd:
+    name: "quay-app"
+    scope: "user"
+  register: quay_service_status
 
 - name: create storage directory
   ansible.builtin.file:
@@ -8,3 +13,4 @@
   become: true
 - name: install mirror
   ansible.builtin.shell: ./mirror-registry install --quayHostname {{inventory_hostname}} --quayRoot /quay/root --quayStorage /quay/storage --initPassword "SuperSecret"
+  when: quay_service_status.status.ActiveState != "active"

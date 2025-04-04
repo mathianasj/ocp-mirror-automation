@@ -9,19 +9,3 @@
     src: ~/mirror-registry-amd64.tar.gz
     dest: ~/
     remote_src: yes
-- name: copy rpm needed
-  ansible.builtin.copy:
-    src: /home/cmirror/acl-2.3.2-2.fc41.x86_64.rpm
-    dest: ~/
-- name: Get list of yum repos (to disable them temporarily)
-  ansible.builtin.command: yum -q repolist
-  register: _yum_repolist_output
-  changed_when: False
-- name: install acl
-  ansible.builtin.dnf:
-    name: /home/fedora/acl-2.3.2-2.fc41.x86_64.rpm
-    state: present
-    enablerepo: []
-    disablerepo: "{{ _yum_repolist_output.stdout_lines[1:] | map('split',' ') | map('first') | list }}"
-    disable_gpg_check: true
-  become: true
