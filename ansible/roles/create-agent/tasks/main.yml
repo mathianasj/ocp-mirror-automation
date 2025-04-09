@@ -16,7 +16,7 @@
 - name: copy manifests to be applied at install time
   ansible.builtin.copy:
     src: "{{ item }}"
-    dest: "/home/cmirror/cluster-config/cluster-manifests"
+    dest: "/home/cmirror/cluster-config/openshift"
   with_fileglob: "/home/cmirror/oc-mirrors/working-dir/cluster-resources/*.yaml"
 
 - name: build iso
