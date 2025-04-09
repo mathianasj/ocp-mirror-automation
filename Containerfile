@@ -28,7 +28,7 @@ RUN oc mirror -c /home/cmirror/imagesetconfig.yaml file:///home/cmirror/oc-mirro
 	rm -rf /var/lib/containers
 
 RUN export RELEASE_IMAGE=$(curl -s https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/4.18.2/release.txt | grep 'Pull From: quay.io' | awk -F ' ' '{print $3}') && \
-	oc adm release extract --registry-config /root/.docker/config.json --command=openshift-install --to "/usr/bin" ${RELEASE_IMAGE}
+	oc adm release extract --registry-config /home/cmirror/.docker/config.json --command=openshift-install --to "/usr/bin" ${RELEASE_IMAGE}
 
 RUN curl -LO https://github.com/mikefarah/yq/releases/download/v4.45.1/yq_linux_amd64.tar.gz && \
 	tar -xvzf yq_linux_amd64.tar.gz && \

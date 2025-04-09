@@ -1,11 +1,18 @@
 ---
+- name: get quay app service status
+  ansible.builtin.systemd:
+    name: "quay-app"
+    scope: "user"
+  register: quay_service_status
 
 - name: copy mirror-registry.tar.gz
   ansible.builtin.copy:
     src: /home/cmirror/mirror-registry-amd64.tar.gz
     dest: ~/
+  when: quay_service_status.status.ActiveState != "active"
 - name: extract mirror-registry
   ansible.builtin.unarchive:
     src: ~/mirror-registry-amd64.tar.gz
     dest: ~/
     remote_src: yes
+  when: quay_service_status.status.ActiveState != "active"
