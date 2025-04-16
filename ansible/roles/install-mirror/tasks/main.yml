@@ -7,7 +7,7 @@
 
 - name: create storage directory
   ansible.builtin.file:
-    path: /quay
+    path: {{quay_root}}
     state: directory
     mode: 0777
   become: true
