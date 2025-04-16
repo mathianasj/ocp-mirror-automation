@@ -8,7 +8,7 @@
     src: pullsecret.json.j2
     dest: /home/cmirror/.docker/config.json
 - name: deploy mirror images
-  ansible.builtin.shell: "oc mirror --v2 --from file:///home/cmirror/oc-mirrors docker://{{inventory_hostname}}:8443 --config /home/cmirror/imagesetconfig.yaml --dest-tls-verify=false --src-tls-verify=false"
+  ansible.builtin.shell: "oc mirror --v2 --from file:///home/cmirror/oc-mirrors docker://{{quay_hostname}}:8443 --config /home/cmirror/imagesetconfig.yaml --dest-tls-verify=false --src-tls-verify=false"
   register: mirrorout
 
 - debug: var=mirrorout.stdout_lines
