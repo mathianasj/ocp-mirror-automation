@@ -7,10 +7,10 @@
 
 - name: create storage directory
   ansible.builtin.file:
-    path: {{quay_root}}
+    path: "{{quay_root}}"
     state: directory
     mode: 0777
   become: true
 - name: install mirror
-  ansible.builtin.shell: ./mirror-registry install --quayHostname {{inventory_hostname}} --quayRoot /quay/root --quayStorage /quay/storage --initPassword "SuperSecret"
+  ansible.builtin.shell: "./mirror-registry install --quayHostname {{inventory_hostname}} --quayRoot {{quay_root}}/root --quayStorage {{quay_root}}/storage --initPassword \"SuperSecret\""
   when: quay_service_status.status.ActiveState != "active"
