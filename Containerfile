@@ -13,13 +13,15 @@ RUN tar -xvzf openshift-client-linux-amd64-rhel9.tar.gz && \
 	tar -xvzf oc-mirror.rhel9.tar.gz && \
 	mv kubectl /usr/bin && \
 	mv oc /usr/bin && \
-	mv oc-mirror /usr/bin && chmod +x /usr/bin/oc-mirror
+	mv oc-mirror /usr/bin && chmod +x /usr/bin/oc-mirror && \
+	mkdir =p /root/.docker
 
 RUN dnf install -y ansible-core nmstate
 
 ENV HOME=/home/cmirror
 
 COPY imagesetconfig.yaml /home/cmirror/
+COPY pullsecret.json /root/.docker/config.json
 
 RUN oc mirror -c /home/cmirror/imagesetconfig.yaml file:///home/cmirror/oc-mirrors --v2 && \
 	rm -rf oc-mirrors/working-dir && \
